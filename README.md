@@ -1,10 +1,10 @@
 # RoomTime
 
-RoomTime is a bundle of tools developed in my app `RoomTime Lite`(^^ RoomTime is still in development). 
+RoomTime is a bundle of tools developed in my app `RoomTime Lite`. (😊 RoomTime Lite is still in development)
 
 # Features
 
-- [TextArea](##textarea)
+- [TextArea](#textarea)
 - *more in developing ...*
 
 # Requirements
