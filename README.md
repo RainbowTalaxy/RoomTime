@@ -4,7 +4,7 @@ RoomTime is a bundle of tools developed in my app `RoomTime Lite`(^^ RoomTime is
 
 # Features
 
-- [TextArea](##TextArea)
+- [TextArea](##textarea)
 - *more in developing ...*
 
 # Requirements
@@ -13,13 +13,14 @@ RoomTime is a bundle of tools developed in my app `RoomTime Lite`(^^ RoomTime is
 
 # Installation
 
-*in editing*
+1. In Xcode project, navigate to **File -> Swift Packages -> Add Package Dependency...**.
+2. Paste `https://github.com/RainbowTalaxy/RoomTime` and click **Next**.
 
 # Usage
 
 ## TextArea
 
-TextArea uses like SwiftUI's TextEditor, but not supports internal modifier such as `.font(_)`.
+`TextArea` uses like SwiftUI's `TextEditor`, but not supports internal modifier such as `.font(_)`.
 
 ```swift
 struct TextAreaDemo: View {
