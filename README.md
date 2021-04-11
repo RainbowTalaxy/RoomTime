@@ -10,7 +10,10 @@ RoomTime is a bundle of tools developed in my app `RoomTime Lite`. (😊 RoomTim
 
 # Requirements
 
-- iOS 13
+- iOS 13 or newer
+- tvOS 13 or newer
+- watchOS 6 or newer
+- *macOS is not supported currently*
 
 # Installation
 
@@ -38,7 +41,7 @@ struct TextAreaDemo: View {
 
 `AutoWrap` can let views wrap automaticly:
 
-![AutoWrap](Assets/autowrap.jpeg)
+![AutoWrap](Assets/autowrap.png)
 
 ```swift
 struct AutoWrapDemo: View {
@@ -48,22 +51,11 @@ struct AutoWrapDemo: View {
     ]
     
     var body: some View {
-        // 'vSpacing' and 'hSpacing' are both default by 0.
-        AutoWrap(data, id: \.self, vSpacing: 5, hSpacing: 5) { n in
-            Text("\(n)")
-                .fixedSize()
-                .padding(.horizontal, 8)
-                .padding(.vertical, 5)
-                .background(
-                    Color(CGColor(red: random, green: random, blue: random, alpha: 1))
-                )
-                .cornerRadius(10)
+        // 'vSpacing' and 'hSpacing' are both default by 0
+        AutoWrap(data, id: \.self, vSpacing: 5, hSpacing: 5) { text in
+            Tag(text, bgcolor: RTColor.Tag.random())
         }
         .padding()
-    }
-    
-    var random: CGFloat {
-        CGFloat.random(in: 0...1)
     }
 }
 ```
