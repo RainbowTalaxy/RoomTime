@@ -17,7 +17,7 @@ RoomTime is a bundle of tools developed in my app `RoomTime Lite`. (😊 RoomTim
 
 # Installation
 
-1. In Xcode project, navigate to **File -> Swift Packages -> Add Package Dependency...**.
+1. In Xcode project, navigate to **File -> Swift Packages -> Add Package Dependency...** .
 2. Paste `https://github.com/RainbowTalaxy/RoomTime` and click **Next**.
 
 # Usage
