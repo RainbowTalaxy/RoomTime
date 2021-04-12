@@ -57,8 +57,8 @@ public struct Header: View {
                 .padding(.vertical, 3)
             
             Rectangle()
+                .fill(Color.gray)
                 .frame(height: CGFloat(1.8 - Double(element.level) * 0.2))
-                .border(Color.gray, width: 1)
         }
     }
 }
