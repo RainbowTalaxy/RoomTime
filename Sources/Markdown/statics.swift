@@ -26,17 +26,17 @@ public struct TypeMap {
 }
 
 public let defaultSplitRules: [SplitRule] = [
-//        ListSplitRule(priority: 0),
-//        CodeSplitRule(priority: 1),
+    ListSplitRule(priority: 0),
+    CodeSplitRule(priority: 1),
     HeaderSplitRule(priority: 2),
-//        QuoteSplitRule(priority: 3),
-//        LineSplitRule(priority: 4)
+    QuoteSplitRule(priority: 3),
+    LineSplitRule(priority: 4)
 ]
 
 public let defaultMapRules: [MapRule] = [
     HeaderMapRule(priority: 0),
-//        QuoteMapRule(priority: 1),
-//        CodeMapRule(priority: 2),
-//        ListMapRule(priority: 3),
-//        LineMapRule(priority: 4)
+    QuoteMapRule(priority: 1),
+    CodeMapRule(priority: 2),
+    ListMapRule(priority: 3),
+    LineMapRule(priority: 4)
 ]

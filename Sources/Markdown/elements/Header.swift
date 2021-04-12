@@ -7,20 +7,24 @@
 
 import SwiftUI
 
-public let headerRegex = #"^ *#{1,6} +[^ \n]+.*$"#
-public let headerSignRegex = #"^ *#{1,6} +"#
+fileprivate let headerType = "header"
+fileprivate let headerRegex = #"^ *#{1,6} +[^ \n]+.*$"#
+fileprivate let headerSignRegex = #"^ *#{1,6} +"#
 
 public class HeaderSplitRule: SplitRule {
     public override func split(from text: String) -> [Raw] {
-        return split(by: headerRegex, text: text, type: TypeMap.header)
+        return split(by: headerRegex, text: text, type: headerType)
     }
 }
 
 public class HeaderMapRule: MapRule {
     public override func map(from raw: Raw, resolver: Resolver?) -> Element? {
-        return raw.type == TypeMap.header ? HeaderElement(raw: raw) : nil
+        return raw.type == headerType ? HeaderElement(raw: raw) : nil
     }
 }
+
+fileprivate let minLevel = 1
+fileprivate let maxLevel = 6
 
 public class HeaderElement: Element {
     public let title: String
@@ -28,19 +32,18 @@ public class HeaderElement: Element {
     
     public override init(raw: Raw, resolver: Resolver? = nil) {
         if let level = raw.text.matchResult(by: headerSignRegex, options: lineRegexOption).first?.trimmed().count {
-            self.level = (level >= 1 && level <= 6) ? level : 1
+            self.level = (level >= minLevel && level <= maxLevel) ? level : 1
         } else {
-            self.level = 1
+            self.level = maxLevel
         }
-        title = raw.text.replace(by: headerSignRegex, with: "", options: lineRegexOption).trimmed()
-
+        self.title = raw.text.replace(by: headerSignRegex, with: "", options: lineRegexOption).trimmed()
         super.init(raw: raw)
     }
     
 }
 
 public struct Header: View {
-    public let element: HeaderElement
+    let element: HeaderElement
     
     public init(element: HeaderElement) {
         self.element = element
