@@ -1,69 +1,57 @@
 //
-//  Markdown.swift
+//  File.swift
 //  
 //
 //  Created by Talaxy on 2021/4/11.
 //
 
-public struct Raw: Hashable {
-    public let lock: Bool
-    public let text: String
-    public let type: String?
-    
-    public init(lock: Bool, text: String, type: String? = nil) {
-        self.lock = lock
-        self.text = text
-        self.type = type
-    }
-}
+import SwiftUI
 
-public class Resolver {
+public struct Markdown<Content: View>: View {
     
-    public let splitRules: [SplitRule]
-    public let mapRules: [MapRule]
+    public let elements: [Element]
+    public let content: (Element) -> Content
     
     public init(
-        splitRules: [SplitRule] = defaultSplitRules,
-        mapRules: [MapRule] = defaultMapRules
+        elements: [Element],
+        @ViewBuilder content: @escaping (Element) -> Content
     ) {
-        self.splitRules = splitRules
-        self.mapRules = mapRules
+        self.elements = elements
+        self.content = content
     }
     
-    public func split(text: String, allowEmptyText: Bool = false) -> [Raw] {
-        var result: [Raw] = [Raw(lock: false, text: text, type: nil)]
-        splitRules.forEach { rule in
-            result = rule.splitAll(raws: result)
-            if !allowEmptyText {
-                result.removeAll { raw in
-                    raw.text.trimmed() == ""
+    public init(
+        text: String,
+        resolver: Resolver? = Resolver(),
+        @ViewBuilder content: @escaping (Element) -> Content
+    ) {
+        self.elements = resolver?.render(text: text) ?? []
+        self.content = content
+    }
+    
+    public init(
+        text: String,
+        splitRules: [SplitRule]? = defaultSplitRules,
+        mapRules: [MapRule]? = defaultMapRules,
+        @ViewBuilder content: @escaping (Element) -> Content
+    ) {
+        let resolver = Resolver(
+            splitRules: splitRules ?? defaultSplitRules,
+            mapRules: mapRules ?? defaultMapRules
+        )
+        self.elements = resolver.render(text: text)
+        self.content = content
+    }
+    
+    public var body: some View {
+        VStack(alignment: .leading, spacing: 15) {
+            ForEach(elements) { element in
+                HStack(spacing: 0) {
+                    content(element)
+                    Spacer(minLength: 0)
                 }
             }
         }
-        return result
     }
     
-    public func map(raws: [Raw]) -> [Element] {
-        var mapping: [Element?] = .init(repeating: nil, count: raws.count)
-        mapRules.forEach { rule in
-            for i in 0..<raws.count {
-                if mapping[i] == nil {
-                    mapping[i] = rule.map(from: raws[i], resolver: self)
-                }
-            }
-        }
-        var result: [Element] = []
-        for element in mapping {
-            if let element = element {
-                result.append(element)
-            }
-        }
-        return result
-    }
-    
-    public func render(text: String, allowEmptyText: Bool = false) -> [Element] {
-        let raws = split(text: text, allowEmptyText: allowEmptyText)
-        let elements = map(raws: raws)
-        return elements
-    }
 }

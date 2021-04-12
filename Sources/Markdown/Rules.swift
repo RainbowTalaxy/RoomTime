@@ -7,6 +7,20 @@
 
 import Foundation
 
+public struct Raw: Hashable {
+    public let lock: Bool
+    public let text: String
+    public let type: String?
+    
+    public init(lock: Bool, text: String, type: String? = nil) {
+        self.lock = lock
+        self.text = text
+        self.type = type
+    }
+}
+
+
+
 open class Element: Identifiable {
     public let id: UUID
     

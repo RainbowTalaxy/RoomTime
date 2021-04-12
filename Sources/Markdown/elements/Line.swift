@@ -7,17 +7,19 @@
 
 import SwiftUI
 
+fileprivate let lineType = "line"
+
 public class LineSplitRule: SplitRule {
     public override func split(from text: String) -> [Raw] {
          return text.split(separator: "\n").map { text in
-            Raw(lock: true, text: String(text).trimmed(), type: TypeMap.line)
+            Raw(lock: true, text: String(text).trimmed(), type: lineType)
         }
     }
 }
 
 public class LineMapRule: MapRule {
     public override func map(from raw: Raw, resolver: Resolver?) -> Element? {
-        return raw.type == TypeMap.line ? LineElement(raw: raw) : nil
+        return raw.type == lineType ? LineElement(raw: raw) : nil
     }
 }
 

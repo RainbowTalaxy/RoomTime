@@ -9,22 +9,6 @@ import Foundation
 
 public let lineRegexOption: NSRegularExpression.Options = [.anchorsMatchLines]
 
-public struct TypeMap {
-    
-    public static let header = "header"
-    
-    public static let quote = "quote"
-    
-    public static let code = "code"
-    
-    public static let unorderlist = "ul"
-    
-    public static let orderlist = "ol"
-    
-    public static let line = "line"
-    
-}
-
 public let defaultSplitRules: [SplitRule] = [
     ListSplitRule(priority: 0),
     CodeSplitRule(priority: 1),

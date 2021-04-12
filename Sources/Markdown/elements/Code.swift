@@ -8,19 +8,20 @@
 import SwiftUI
 import RoomTime
 
+fileprivate let codeType = "code"
 fileprivate let codeRegex = #"^ *`{3} *\w* *$[\s\S]*?^ *`{3} *$"#
 fileprivate let codeHeadRegex = #"^ *`{3} *\w* *$"#
 fileprivate let codeSignRegex = #"^ *`{3} *"#
 
 public class CodeSplitRule: SplitRule {
     public override func split(from text: String) -> [Raw] {
-        return split(by: codeRegex, text: text, type: TypeMap.code)
+        return split(by: codeRegex, text: text, type: codeType)
     }
 }
 
 public class CodeMapRule: MapRule {
     public override func map(from raw: Raw, resolver: Resolver?) -> Element? {
-        return raw.type == TypeMap.code ? CodeElement(raw: raw) : nil
+        return raw.type == codeType ? CodeElement(raw: raw) : nil
     }
 }
 

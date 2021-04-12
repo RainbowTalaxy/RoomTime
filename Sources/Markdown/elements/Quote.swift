@@ -8,18 +8,19 @@
 import SwiftUI
 import RoomTime
 
+fileprivate let quoteType = "quote"
 fileprivate let quoteRegex = #"^ *>+ +[^ \n]+.*$"#
 fileprivate let quoteSignRegex = #"^ *>+ +"#
 
 public class QuoteSplitRule: SplitRule {
     public override func split(from text: String) -> [Raw] {
-        return split(by: quoteRegex, text: text, type: TypeMap.quote)
+        return split(by: quoteRegex, text: text, type: quoteType)
     }
 }
 
 public class QuoteMapRule: MapRule {
     public override func map(from raw: Raw, resolver: Resolver?) -> Element? {
-        return raw.type == TypeMap.quote ? QuoteElement(raw: raw) : nil
+        return raw.type == quoteType ? QuoteElement(raw: raw) : nil
     }
 }
 

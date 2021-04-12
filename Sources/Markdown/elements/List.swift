@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+fileprivate let unorderListType = "ul"
+fileprivate let orderListType = "ol"
 fileprivate let listLineRegex = #"^ *(?:[*+-]|[0-9]+.) +[^ \n]+.*$"#
 fileprivate let listIndentRegex = #"^ *(?:[*+-]|[0-9]+.) +(?=[^ \n]+.*$)"#
 
@@ -18,9 +20,9 @@ fileprivate let orderIndentRegex = #"^ *[0-9]+. +(?=[^ \n]+.*$)"#
 
 fileprivate func getLineRegex(type: String?) -> String {
     switch type {
-    case TypeMap.unorderlist:
+    case unorderListType:
         return unorderListLineRegex
-    case TypeMap.orderlist:
+    case orderListType:
         return orderListLineRegex
     default:
         return ".*"
@@ -29,9 +31,9 @@ fileprivate func getLineRegex(type: String?) -> String {
 
 fileprivate func getLineType(line: Substring) -> String? {
     if line.match(by: unorderListLineRegex, options: lineRegexOption) {
-        return TypeMap.unorderlist
+        return unorderListType
     } else if line.match(by: orderListLineRegex, options: lineRegexOption) {
-        return TypeMap.orderlist
+        return orderListType
     } else {
         return nil
     }
@@ -40,9 +42,9 @@ fileprivate func getLineType(line: Substring) -> String? {
 fileprivate func getListIndentNum(text: Substring, type: String?) -> Int {
     var content = ""
     switch type {
-    case TypeMap.unorderlist:
+    case unorderListType:
         content = text.replace(by: unorderIndentRegex, with: "", options: lineRegexOption)
-    case TypeMap.orderlist:
+    case orderListType:
         content = text.replace(by: orderIndentRegex, with: "", options: lineRegexOption)
     default:
         return String(text).preBlankNum
@@ -57,9 +59,9 @@ fileprivate func build(_ item: String, num: Int) -> String {
 fileprivate func getListSignRemoved(text: Substring, type: String?) -> String {
     var content = ""
     switch type {
-    case TypeMap.unorderlist:
+    case unorderListType:
         content = text.replace(by: unorderIndentRegex, with: "", options: lineRegexOption)
-    case TypeMap.orderlist:
+    case orderListType:
         content = text.replace(by: orderIndentRegex, with: "", options: lineRegexOption)
     default:
         return String(text)
@@ -81,7 +83,7 @@ public class ListSplitRule: SplitRule {
             }
             
             switch type {
-            case TypeMap.unorderlist, TypeMap.orderlist:
+            case unorderListType, orderListType:
                 if line.preBlankNum >= indent {
                     content += line.withLine
                 } else {
@@ -119,7 +121,7 @@ public class ListSplitRule: SplitRule {
 public class ListMapRule: MapRule {
     public override func map(from raw: Raw, resolver: Resolver?) -> Element? {
         switch raw.type {
-        case TypeMap.orderlist, TypeMap.unorderlist:
+        case orderListType, unorderListType:
             return ListElement(raw: raw, resolver: resolver)
         default:
             return nil
@@ -188,12 +190,12 @@ public struct List<Content: View>: View {
             ForEach(0..<element.items.count) { listIndex in
                 HStack(alignment: .top, spacing: 5) {
                     switch element.type {
-                    case TypeMap.unorderlist:
+                    case unorderListType:
                         Circle()
                             .fill(Color.blue)
                             .frame(width: 7, height: 7)
                             .padding(6.5)
-                    case TypeMap.orderlist:
+                    case orderListType:
                         ZStack(alignment: .center) {
                             Text("\(listIndex + 1).")
                                 .foregroundColor(.blue)
