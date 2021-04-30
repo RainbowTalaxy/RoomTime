@@ -19,17 +19,9 @@ public struct Raw: Hashable {
     }
 }
 
-
-
 open class Element: Identifiable {
-    public let id: UUID
-    
-    public init(raw: Raw, resolver: Resolver? = nil) {
-        self.id = UUID()
-    }
+    public let id = UUID()
 }
-
-
 
 open class SplitRule {
     public let priority: Double
@@ -68,8 +60,6 @@ open class SplitRule {
         return elements
     }
 }
-
-
 
 open class MapRule {
     public let priority: Double

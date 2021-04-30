@@ -7,20 +7,26 @@
 
 import Foundation
 
+// option for common regular expression executes
 public let lineRegexOption: NSRegularExpression.Options = [.anchorsMatchLines]
 
+// this default rules is used by Markdown view and Resolver
 public let defaultSplitRules: [SplitRule] = [
-    ListSplitRule(priority: 0),
-    CodeSplitRule(priority: 1),
-    HeaderSplitRule(priority: 2),
-    QuoteSplitRule(priority: 3),
-    LineSplitRule(priority: 4)
+    SpaceConvertRule(priority: 0),
+    BorderSplitRule(priority: 1),
+    ListSplitRule(priority: 2),
+    CodeSplitRule(priority: 3),
+    HeaderSplitRule(priority: 4),
+    QuoteSplitRule(priority: 5),
+    LineSplitRule(priority: 6)
 ]
 
+// this default rules is used by Markdown view and Resolver
 public let defaultMapRules: [MapRule] = [
     HeaderMapRule(priority: 0),
     QuoteMapRule(priority: 1),
     CodeMapRule(priority: 2),
     ListMapRule(priority: 3),
-    LineMapRule(priority: 4)
+    BorderMapRule(priority: 4),
+    LineMapRule(priority: 5)
 ]

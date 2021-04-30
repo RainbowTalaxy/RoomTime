@@ -8,52 +8,13 @@
 import SwiftUI
 import RoomTime
 
-fileprivate let codeType = "code"
-fileprivate let codeRegex = #"^ *`{3} *\w* *$[\s\S]*?^ *`{3} *$"#
-fileprivate let codeHeadRegex = #"^ *`{3} *\w* *$"#
-fileprivate let codeSignRegex = #"^ *`{3} *"#
-
-public class CodeSplitRule: SplitRule {
-    public override func split(from text: String) -> [Raw] {
-        return split(by: codeRegex, text: text, type: codeType)
-    }
-}
-
-public class CodeMapRule: MapRule {
-    public override func map(from raw: Raw, resolver: Resolver?) -> Element? {
-        return raw.type == codeType ? CodeElement(raw: raw) : nil
-    }
-}
-
 public class CodeElement: Element {
     let lines: [String]
-    var lang: String = ""
+    let lang: String?
     
-    public override init(raw: Raw, resolver: Resolver? = nil) {
-        var texts = raw.text.split(separator: "\n")
-        var indent = 0
-        
-        if let firstLine = texts.first {
-            if firstLine.match(by: codeHeadRegex, options: lineRegexOption) {
-                lang = firstLine.replace(by: codeSignRegex, with: "", options: lineRegexOption).trimmed()
-                texts.removeFirst()
-            }
-        }
-        
-        if let lastLine = texts.last {
-            if lastLine.match(by: codeSignRegex, options: lineRegexOption) {
-                indent = lastLine.preBlankNum
-                texts.removeLast()
-            }
-        }
-        
-        self.lines = texts.map { line in
-            var line = String(line)
-            line.removeFirst(indent)
-            return line
-        }
-        
-        super.init(raw: raw)
+    public init(lines: [String], lang: String? = nil) {
+        self.lines = lines
+        self.lang = lang
     }
     
 }
@@ -99,7 +60,6 @@ public struct Code: View {
                     }
                     .padding([.vertical, .leading])
                     .padding(.trailing, 7)
-                    // line number background color
                     .background(RTColor.Tag.gray)
                     
                     Spacer(minLength: 0)
@@ -108,17 +68,17 @@ public struct Code: View {
             .font(.custom("menlo", size: 15))
             
             // language rect
-            if element.lang != "" {
-                Text(element.lang)
-                    .foregroundColor(Color.gray)
+            if let lang = element.lang {
+                Text(lang)
+                    .foregroundColor(RTColor.Tag.gray)
                     .padding(4)
                     .padding(.horizontal, 3)
-                    .background(RTColor.Tag.gray)
+                    .background(Color.gray.opacity(0.5))
                     .cornerRadius(10)
                     .padding(7)
             }
         }
-        .background(Color.gray.opacity(0.3))
+        .background(RTColor.Tag.gray)
         .cornerRadius(10)
     }
 }
