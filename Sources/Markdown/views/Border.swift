@@ -7,8 +7,6 @@
 
 import SwiftUI
 
-public class BorderElement: Element {}
-
 public struct Border: View {
     public init() {}
     

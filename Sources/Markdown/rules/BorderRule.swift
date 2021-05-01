@@ -21,3 +21,5 @@ public class BorderMapRule: MapRule {
         return raw.type == borderType ? BorderElement() : nil
     }
 }
+
+public class BorderElement: Element {}

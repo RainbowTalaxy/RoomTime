@@ -26,3 +26,11 @@ public class LineMapRule: MapRule {
         return nil
     }
 }
+
+public class LineElement: Element {
+    public let text: String
+    
+    public init(text: String) {
+        self.text = text
+    }
+}

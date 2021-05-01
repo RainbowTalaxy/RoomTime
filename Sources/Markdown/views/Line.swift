@@ -7,14 +7,6 @@
 
 import SwiftUI
 
-public class LineElement: Element {
-    public let text: String
-    
-    public init(text: String) {
-        self.text = text
-    }
-}
-
 public struct Line: View {
     let element: LineElement
     

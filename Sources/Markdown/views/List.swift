@@ -9,16 +9,6 @@ import SwiftUI
 
 // MARK: Order list
 
-public class OrderListElement: Element {
-    public let offset: Int
-    public let items: [[Element]]
-
-    public init(items: [[Element]], offset: Int = 1) {
-        self.items = items
-        self.offset = offset
-    }
-}
-
 public struct OrderList<Content: View>: View {
     let element: OrderListElement
     let content: ([Element]) -> Content
@@ -57,20 +47,6 @@ public struct OrderList<Content: View>: View {
 }
 
 // MARK: Unorder list
-
-public class UnorderListElement: Element {
-    public enum Sign {
-        case star, plus, minus
-    }
-    
-    public let sign: Sign
-    public let items: [[Element]]
-
-    public init(items: [[Element]], sign: Sign = .star) {
-        self.items = items
-        self.sign = sign
-    }
-}
 
 public struct UnorderList<Content: View>: View {
     let element: UnorderListElement

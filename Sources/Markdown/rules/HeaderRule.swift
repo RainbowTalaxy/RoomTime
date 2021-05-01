@@ -38,3 +38,13 @@ public class HeaderMapRule: MapRule {
         }
     }
 }
+
+public class HeaderElement: Element {
+    public let title: String
+    public let level: Int
+    
+    public init(title: String, level: Int) {
+        self.title = title
+        self.level = level
+    }
+}

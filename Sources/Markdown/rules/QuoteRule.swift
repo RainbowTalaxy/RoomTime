@@ -25,7 +25,6 @@ public class QuoteSplitRule: SplitRule {
 public class QuoteMapRule: MapRule {
     public override func map(from raw: Raw, resolver: Resolver?) -> Element? {
         if raw.type == quoteType {
-            print(raw.text)
             let text = raw.text.replace(by: quoteSignRegex, with: "", options: lineRegexOption).trimmed()
             let elements = resolver?.render(text: text) ?? []
             return QuoteElement(elements: elements)

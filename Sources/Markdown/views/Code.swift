@@ -8,17 +8,6 @@
 import SwiftUI
 import RoomTime
 
-public class CodeElement: Element {
-    let lines: [String]
-    let lang: String?
-    
-    public init(lines: [String], lang: String? = nil) {
-        self.lines = lines
-        self.lang = lang
-    }
-    
-}
-
 public struct Code: View {
     let element: CodeElement
     
