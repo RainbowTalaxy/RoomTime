@@ -50,7 +50,7 @@ open class SplitRule {
         var elements: [Raw] = []
         let splitResult = text.split(by: regex, options: lineRegexOption)
         for section in splitResult.result {
-            let content = String(splitResult.raw[section.range]).trimLine()
+            let content = String(splitResult.raw[section.range])
             if section.match {
                 elements.append(Raw(lock: true, text: content, type: type))
             } else {

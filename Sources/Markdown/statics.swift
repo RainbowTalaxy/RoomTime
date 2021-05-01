@@ -13,8 +13,9 @@ public let lineRegexOption: NSRegularExpression.Options = [.anchorsMatchLines]
 // this default rules is used by Markdown view and Resolver
 public let defaultSplitRules: [SplitRule] = [
     SpaceConvertRule(priority: 0),
-    BorderSplitRule(priority: 1),
-    ListSplitRule(priority: 2),
+    ListSplitRule(priority: 1),
+    TableSplitRule(priority: 1.5),
+    BorderSplitRule(priority: 2),
     CodeIndentSplitRule(priority: 2.9),
     CodeBlockSplitRule(priority: 3),
     HeaderSplitRule(priority: 4),

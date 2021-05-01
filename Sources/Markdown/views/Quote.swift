@@ -26,6 +26,7 @@ public struct Quote<Content: View>: View {
             
             Spacer(minLength: 0)
         }
+        .frame(minHeight: 0)
         .foregroundColor(RTColor.black)
         .padding(9)
         .padding(.leading, 3)

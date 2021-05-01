@@ -18,16 +18,14 @@ public class Resolver {
         self.mapRules = mapRules
     }
     
-    public func split(text: String, allowEmptyText: Bool = false) -> [Raw] {
+    public func split(text: String) -> [Raw] {
         var result: [Raw] = [Raw(lock: false, text: text, type: nil)]
         splitRules.sorted { r1, r2 in
             return r1.priority < r2.priority
         }.forEach { rule in
             result = rule.splitAll(raws: result)
-            if !allowEmptyText {
-                result.removeAll { raw in
-                    raw.text.trimmed() == ""
-                }
+            result.removeAll { raw in
+                raw.text.trimmed() == ""
             }
         }
         return result
@@ -53,8 +51,8 @@ public class Resolver {
         return result
     }
     
-    public func render(text: String, allowEmptyText: Bool = false) -> [Element] {
-        let raws = split(text: text, allowEmptyText: allowEmptyText)
+    public func render(text: String) -> [Element] {
+        let raws = split(text: text)
         let elements = map(raws: raws)
         return elements
     }

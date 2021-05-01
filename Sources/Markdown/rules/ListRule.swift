@@ -100,14 +100,14 @@ fileprivate func getListSignRemoved(text: Substring, type: String?) -> String {
 
 public class ListSplitRule: SplitRule {
     public override func split(from text: String) -> [Raw] {
-        var elements: [Raw] = []
-        let lines = text.split(separator: "\n")
+        var raws: [Raw] = []
+        let lines = text.split(separator: "\n", omittingEmptySubsequences: false)
         var indent = 0, content = "", type: String?
         
         for line in lines {
             
             if line.trimmed() == "" {
-                continue
+                content += line.withLine
             }
             
             switch type {
@@ -117,7 +117,7 @@ public class ListSplitRule: SplitRule {
                 } else {
                     let lineType = getLineType(line: line)
                     if lineType != type {
-                        elements.append(Raw(lock: type != nil, text: content, type: type))
+                        raws.append(Raw(lock: type != nil, text: content, type: type))
                         type = lineType
                         content = line.withLine
                     } else {
@@ -127,7 +127,7 @@ public class ListSplitRule: SplitRule {
                 }
             default:
                 if line.match(by: listLineRegex, options: lineRegexOption) {
-                    elements.append(Raw(lock: false, text: content, type: type))
+                    raws.append(Raw(lock: false, text: content, type: type))
                     type = getLineType(line: line)
                     indent = getListIndentNum(text: line, type: type)
                     content = line.withLine
@@ -139,10 +139,10 @@ public class ListSplitRule: SplitRule {
         }
         
         if content != "" {
-            elements.append(Raw(lock: type != nil, text: content, type: type))
+            raws.append(Raw(lock: type != nil, text: content, type: type))
         }
         
-        return elements
+        return raws
     }
 }
 
@@ -157,7 +157,7 @@ public class ListMapRule: MapRule {
 
             for line in lines {
                 if line.trimmed() == "" {
-                    continue
+                    content += line.withLine
                 }
 
                 if line.match(by: orderListLineRegex, options: lineRegexOption) {

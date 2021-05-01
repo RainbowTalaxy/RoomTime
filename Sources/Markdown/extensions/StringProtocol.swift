@@ -85,6 +85,36 @@ extension StringProtocol {
             return text
         }
     }
+    
+    func contains(by regexText: String, options: NSRegularExpression.Options) -> Bool {
+        let text = String(self)
+        if let regex = try? NSRegularExpression(pattern: regexText, options: options) {
+            let matches = regex.matches(
+                in: text,
+                options: [],
+                range: NSRange(text.startIndex..., in: text)
+            )
+            
+            if matches.count > 0 {
+                return true
+            }
+        }
+        return false
+    }
+    
+    func matchNum(by regexText: String, options: NSRegularExpression.Options) -> Int {
+        let text = String(self)
+        if let regex = try? NSRegularExpression(pattern: regexText, options: options) {
+            let matches = regex.matches(
+                in: text,
+                options: [],
+                range: NSRange(text.startIndex..., in: text)
+            )
+            
+            return matches.count
+        }
+        return 0
+    }
 }
 
 extension StringProtocol {
