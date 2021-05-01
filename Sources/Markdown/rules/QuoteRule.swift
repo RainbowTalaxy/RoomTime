@@ -13,8 +13,8 @@ import Foundation
  */
 
 fileprivate let quoteType = "quote"
-fileprivate let quoteRegex = #"^ *>+ +[^ \n]+.*$"#
-fileprivate let quoteSignRegex = #"^ *>+ +"#
+fileprivate let quoteRegex = #"(?:^ *>+ +.*$\n?)+"#
+fileprivate let quoteSignRegex = #"^ *> ?"#
 
 public class QuoteSplitRule: SplitRule {
     public override func split(from text: String) -> [Raw] {
@@ -25,10 +25,20 @@ public class QuoteSplitRule: SplitRule {
 public class QuoteMapRule: MapRule {
     public override func map(from raw: Raw, resolver: Resolver?) -> Element? {
         if raw.type == quoteType {
+            print(raw.text)
             let text = raw.text.replace(by: quoteSignRegex, with: "", options: lineRegexOption).trimmed()
-            return QuoteElement(text: text)
+            let elements = resolver?.render(text: text) ?? []
+            return QuoteElement(elements: elements)
         }
         
         return nil
+    }
+}
+
+public class QuoteElement: Element {
+    public let elements: [Element]
+    
+    public init(elements: [Element]) {
+        self.elements = elements
     }
 }

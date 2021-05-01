@@ -8,24 +8,21 @@
 import SwiftUI
 import RoomTime
 
-public class QuoteElement: Element {
-    public let text: String
-    
-    public init(text: String) {
-        self.text = text
-    }
-}
-
-public struct Quote: View {
+public struct Quote<Content: View>: View {
     let element: QuoteElement
+    let content: ([Element]) -> Content
     
-    public init(element: QuoteElement) {
+    public init(
+        element: QuoteElement,
+        @ViewBuilder content: @escaping ([Element]) -> Content
+    ) {
         self.element = element
+        self.content = content
     }
     
     public var body: some View {
         HStack(spacing: 0) {
-            Text(element.text)
+            content(element.elements)
             
             Spacer(minLength: 0)
         }

@@ -46,7 +46,7 @@ public struct OrderList<Content: View>: View {
                         }
                         .foregroundColor(.clear)
                     }
-                    .padding(.leading, 4.5)
+//                    .padding(.leading, 4.5)
 
                     content(element.items[listIndex])
                 }
@@ -87,7 +87,7 @@ public struct UnorderList<Content: View>: View {
     public var body: some View {
         VStack(alignment: .leading, spacing: 15) {
             ForEach(0..<element.items.count) { listIndex in
-                HStack(alignment: .top, spacing: 5) {
+                HStack(alignment: .top, spacing: 7) {
                     VStack(spacing: 0) {
                         switch element.sign {
                         case .star:
@@ -102,8 +102,8 @@ public struct UnorderList<Content: View>: View {
                         }
                     }
                     .frame(width: 7, height: 7)
-                    .padding(6.5)
-                    .padding(.leading, 4.5)
+                    .padding(.top, 6.5)
+                    .padding(.horizontal, 2)
 
                     content(element.items[listIndex])
                 }

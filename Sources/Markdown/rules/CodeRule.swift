@@ -25,7 +25,7 @@ public class CodeBlockSplitRule: SplitRule {
 
 fileprivate let codeIndent = 4
 fileprivate let codeIndentType = "codeIndent"
-fileprivate let codeIndentRegex = #"(?:^ {\#(codeIndent)}.+$\n+)+"#
+fileprivate let codeIndentRegex = #"(?:^ {\#(codeIndent)}.+$\n*)+"#
 
 public class CodeIndentSplitRule: SplitRule {
     public override func split(from text: String) -> [Raw] {
