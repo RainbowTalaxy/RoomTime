@@ -88,17 +88,14 @@ fileprivate func build(_ item: String, num: Int) -> String {
 }
 
 fileprivate func getListSignRemoved(text: Substring, type: String?) -> String {
-    var content = ""
     switch type {
     case unorderListType:
-        content = text.replace(by: unorderIndentRegex, with: "", options: lineRegexOption)
+        return text.replace(by: unorderIndentRegex, with: "", options: lineRegexOption)
     case orderListType:
-        content = text.replace(by: orderIndentRegex, with: "", options: lineRegexOption)
+        return text.replace(by: orderIndentRegex, with: "", options: lineRegexOption)
     default:
         return String(text)
     }
-    let indent = text.count - content.count
-    return build(" ", num: indent) + content
 }
 
 public class ListSplitRule: SplitRule {
@@ -167,9 +164,11 @@ public class ListMapRule: MapRule {
                     if offset == nil {
                         offset = getOrderListNumberSign(text: line)
                     }
-
+                    
                     if line.preBlankNum >= indent {
-                        content += line.withLine
+                        var tempLine = line
+                        tempLine.removeFirst(indent)
+                        content += tempLine.withLine
                     } else {
                         if content != "" {
                             texts.append(content)
@@ -178,6 +177,8 @@ public class ListMapRule: MapRule {
                         content = getListSignRemoved(text: line, type: orderListType).withLine
                     }
                 } else {
+                    var tempLine = line
+                    tempLine.removeFirst(indent)
                     content += line.withLine
                 }
             }
@@ -209,7 +210,9 @@ public class ListMapRule: MapRule {
                     }
 
                     if line.preBlankNum >= indent {
-                        content += line.withLine
+                        var tempLine = line
+                        tempLine.removeFirst(indent)
+                        content += tempLine.withLine
                     } else {
                         if content != "" {
                             texts.append(content)
@@ -218,6 +221,8 @@ public class ListMapRule: MapRule {
                         content = getListSignRemoved(text: line, type: unorderListType).withLine
                     }
                 } else {
+                    var tempLine = line
+                    tempLine.removeFirst(indent)
                     content += line.withLine
                 }
             }

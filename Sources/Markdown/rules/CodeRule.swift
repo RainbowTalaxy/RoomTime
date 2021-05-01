@@ -12,49 +12,75 @@ import Foundation
     1. supports indent codeblock
  */
 
-fileprivate let codeType = "code"
-fileprivate let codeRegex = #"^ *`{3} *\w* *$[\s\S]*?^ *`{3} *$"#
-fileprivate let codeHeadRegex = #"^ *`{3} *\w* *$"#
-fileprivate let codeSignRegex = #"^ *`{3} *"#
+fileprivate let codeBlockType = "codeBlock"
+fileprivate let codeBlockRegex = #"^ *`{3} *\w* *$[\s\S]*?^ *`{3} *$"#
+fileprivate let codeBlockHeadRegex = #"^ *`{3} *\w* *$"#
+fileprivate let codeBlockSignRegex = #"^ *`{3} *"#
 
-public class CodeSplitRule: SplitRule {
+public class CodeBlockSplitRule: SplitRule {
     public override func split(from text: String) -> [Raw] {
-        return split(by: codeRegex, text: text, type: codeType)
+        return split(by: codeBlockRegex, text: text, type: codeBlockType)
+    }
+}
+
+fileprivate let codeIndent = 4
+fileprivate let codeIndentType = "codeIndent"
+fileprivate let codeIndentRegex = #"(?:^ {\#(codeIndent)}.+$\n+)+"#
+
+public class CodeIndentSplitRule: SplitRule {
+    public override func split(from text: String) -> [Raw] {
+        return split(by: codeIndentRegex, text: text, type: codeIndentType)
     }
 }
 
 public class CodeMapRule: MapRule {
     public override func map(from raw: Raw, resolver: Resolver?) -> Element? {
-        if raw.type == codeType {
-            var lines: [String]
+        switch raw.type {
+        case codeBlockType:
             var lang: String?
             
             var texts = raw.text.split(separator: "\n")
             var indent = 0
             
             if let firstLine = texts.first {
-                if firstLine.match(by: codeHeadRegex, options: lineRegexOption) {
-                    lang = firstLine.replace(by: codeSignRegex, with: "", options: lineRegexOption).trimmed()
+                if firstLine.match(by: codeBlockHeadRegex, options: lineRegexOption) {
+                    lang = firstLine.replace(by: codeBlockSignRegex, with: "", options: lineRegexOption).trimmed()
                     texts.removeFirst()
                 }
             }
             
             if let lastLine = texts.last {
-                if lastLine.match(by: codeSignRegex, options: lineRegexOption) {
+                if lastLine.match(by: codeBlockSignRegex, options: lineRegexOption) {
                     indent = lastLine.preBlankNum
                     texts.removeLast()
                 }
             }
             
-            lines = texts.map { line in
+            let lines: [String] = texts.map { line in
                 var line = String(line)
                 line.removeFirst(indent)
                 return line
             }
             
-            return CodeElement(lines: lines, lang: lang)
+            return CodeElement(lines: lines, lang: lang == "" ? nil : lang)
+            
+        case codeIndentType:
+            let texts = raw.text.split(separator: "\n")
+            
+            let lines: [String] = texts.map { line in
+                if line.preBlankNum >= codeIndent {
+                    var line = String(line)
+                    line.removeFirst(codeIndent)
+                    return line
+                } else {
+                    return ""
+                }
+            }
+            
+            return CodeElement(lines: lines)
+            
+        default:
+            return nil
         }
-        
-        return nil
     }
 }

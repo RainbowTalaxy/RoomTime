@@ -15,7 +15,8 @@ public let defaultSplitRules: [SplitRule] = [
     SpaceConvertRule(priority: 0),
     BorderSplitRule(priority: 1),
     ListSplitRule(priority: 2),
-    CodeSplitRule(priority: 3),
+    CodeIndentSplitRule(priority: 2.9),
+    CodeBlockSplitRule(priority: 3),
     HeaderSplitRule(priority: 4),
     QuoteSplitRule(priority: 5),
     LineSplitRule(priority: 6)
