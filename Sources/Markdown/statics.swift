@@ -29,6 +29,7 @@ public let defaultMapRules: [MapRule] = [
     QuoteMapRule(priority: 1),
     CodeMapRule(priority: 2),
     ListMapRule(priority: 3),
+    TableMapRule(priority: 3.5),
     BorderMapRule(priority: 4),
     LineMapRule(priority: 5)
 ]
