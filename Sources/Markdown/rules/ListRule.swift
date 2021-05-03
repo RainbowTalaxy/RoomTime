@@ -9,27 +9,27 @@ import Foundation
 
 fileprivate let unorderListType = "ul"
 fileprivate let orderListType = "ol"
-fileprivate let listLineRegex = #"^ *(?:[*+-]|[0-9]+.) +[^ \n]+.*$"#
-fileprivate let listIndentRegex = #"^ *(?:[*+-]|[0-9]+.) +(?=[^ \n]+.*$)"#
+fileprivate let listLineRegex = #"^ *(?:[*+-]|[0-9]+\.) +[^ \n]+.*$"#
+fileprivate let listIndentRegex = #"^ *(?:[*+-]|[0-9]+\.) +(?=[^ \n]+.*$)"#
 
 fileprivate let unorderListLineRegex = #"^ *[*+-] +[^ \n]+.*$"#
 fileprivate let unorderIndentRegex = #"^ *[*+-] +(?=[^ \n]+.*$)"#
 fileprivate let unorderListSignRegex = #"^ *[*+-](?= +[^ \n]+.*$)"#
 
-fileprivate let orderListLineRegex = #"^ *[0-9]+. +[^ \n]+.*$"#
-fileprivate let orderIndentRegex = #"^ *[0-9]+. +(?=[^ \n]+.*$)"#
-fileprivate let orderListNumberRegex = #"^ *[0-9]+(?=. +[^ \n]+.*$)"#
+fileprivate let orderListLineRegex = #"^ *[0-9]+\. +[^ \n]+.*$"#
+fileprivate let orderIndentRegex = #"^ *[0-9]+\. +(?=[^ \n]+.*$)"#
+fileprivate let orderListNumberRegex = #"^ *[0-9]+(?=\. +[^ \n]+.*$)"#
 
-fileprivate func getLineRegex(type: String?) -> String {
-    switch type {
-    case unorderListType:
-        return unorderListLineRegex
-    case orderListType:
-        return orderListLineRegex
-    default:
-        return ".*"
-    }
-}
+//fileprivate func getLineRegex(type: String?) -> String {
+//    switch type {
+//    case unorderListType:
+//        return unorderListLineRegex
+//    case orderListType:
+//        return orderListLineRegex
+//    default:
+//        return ".*"
+//    }
+//}
 
 fileprivate func getLineType(line: Substring) -> String? {
     if line.match(by: unorderListLineRegex, options: lineRegexOption) {
@@ -108,6 +108,7 @@ public class ListSplitRule: SplitRule {
             
             if line.trimmed() == "" {
                 content += line.withLine
+                continue
             }
             
             switch type {
@@ -117,7 +118,10 @@ public class ListSplitRule: SplitRule {
                 } else {
                     let lineType = getLineType(line: line)
                     if lineType != type {
-                        raws.append(Raw(lock: type != nil, text: content, type: type))
+                        if content != "" {
+                            content.removeLast()
+                            raws.append(Raw(lock: type != nil, text: content, type: type))
+                        }
                         type = lineType
                         content = line.withLine
                     } else {
@@ -127,7 +131,10 @@ public class ListSplitRule: SplitRule {
                 }
             default:
                 if line.match(by: listLineRegex, options: lineRegexOption) {
-                    raws.append(Raw(lock: false, text: content, type: type))
+                    if content != "" {
+                        content.removeLast()
+                        raws.append(Raw(lock: false, text: content, type: type))
+                    }
                     type = getLineType(line: line)
                     indent = getListIndentNum(text: line, type: type)
                     content = line.withLine
@@ -139,9 +146,14 @@ public class ListSplitRule: SplitRule {
         }
         
         if content != "" {
+            content.removeLast()
             raws.append(Raw(lock: type != nil, text: content, type: type))
         }
         
+//        print("[CASE START]")
+//        print(text.debugDescription)
+//        print(raws)
+//        print("[CASE END]")
         return raws
     }
 }
@@ -158,6 +170,7 @@ public class ListMapRule: MapRule {
             for line in lines {
                 if line.trimmed() == "" {
                     content += line.withLine
+                    continue
                 }
 
                 if line.match(by: orderListLineRegex, options: lineRegexOption) {
@@ -171,6 +184,7 @@ public class ListMapRule: MapRule {
                         content += tempLine.withLine
                     } else {
                         if content != "" {
+                            content.removeLast()
                             texts.append(content)
                         }
                         indent = getListIndentNum(text: line, type: orderListType)
@@ -184,6 +198,7 @@ public class ListMapRule: MapRule {
             }
 
             if content != "" {
+                content.removeLast()
                 texts.append(content)
             }
 
@@ -201,6 +216,7 @@ public class ListMapRule: MapRule {
 
             for line in lines {
                 if line.trimmed() == "" {
+                    content += line.withLine
                     continue
                 }
 
@@ -215,6 +231,7 @@ public class ListMapRule: MapRule {
                         content += tempLine.withLine
                     } else {
                         if content != "" {
+                            content.removeLast()
                             texts.append(content)
                         }
                         indent = getListIndentNum(text: line, type: unorderListType)
@@ -228,6 +245,7 @@ public class ListMapRule: MapRule {
             }
 
             if content != "" {
+                content.removeLast()
                 texts.append(content)
             }
 

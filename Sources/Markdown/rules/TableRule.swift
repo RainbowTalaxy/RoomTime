@@ -13,11 +13,10 @@ import Foundation
  */
 
 fileprivate let tableType = "table"
-fileprivate let tableAlignRowRegex = #"^ *\|? *:?-+ *:?(?:\| *:?-+ *:?)*\|? *$"#
-fileprivate let tableAlignSignRegex = #" *:?-+ *:?"#
+fileprivate let tableAlignRowRegex = #"^ *\|? *:?-+:? *(?:\| *:?-+:? *)*\|? *$"#
+fileprivate let tableAlignSignRegex = #" *:?-+:? *"#
 fileprivate let tableContentRegex = #"(?<=(?:(?<!\\)\|)|(?:^))[^|].*?(?=(?:(?<!\\)\|)|(?:$))"#
 fileprivate let tableSplitLineRegex = #"(?<!\\)\|"#
-//fileprivate let tableInlineSplitLineRegex = #"(?<!\\|^)\|(?!$)"#
 
 fileprivate func getColumnNumFromAlignRow(text: Substring) -> Int {
     return text.matchNum(by: tableAlignSignRegex, options: lineRegexOption)
@@ -42,7 +41,11 @@ fileprivate func getContentFromRow(text: Substring) -> [String] {
         .split(by: tableContentRegex, options: lineRegexOption)
     splitResult.result.forEach { section in
         if section.match {
-            result.append(splitResult.raw[section.range].trimmed())
+            result.append(
+                splitResult.raw[section.range]
+                    .trimmed()
+                    .replace(by: "\\|", with: "|", options: lineRegexOption)
+            )
         }
     }
     return result
@@ -108,13 +111,7 @@ public class TableSplitRule: SplitRule {
         if content != "" {
             raws.append(Raw(lock: type != nil, text: content, type: type))
         }
-//        print("[CASE STA]")
-//        raws.forEach { raw in
-//            if raw.type == tableType {
-//                print(raw.text)
-//                print("[CASE END]")
-//            }
-//        }
+        
         return raws
     }
 }
@@ -129,10 +126,6 @@ public class TableMapRule: MapRule {
             let rows = lines.map { line in
                 return getContentFromRow(text: line)
             }
-//            print(heads)
-//            print(aligns)
-//            print(rows)
-//            print("[CASE END]")
             return TableElement(heads: heads, aligns: aligns, rows: rows)
         }
         return nil
@@ -154,7 +147,7 @@ public class TableElement: Element {
         self.rows = rows.map { row in
             var row = row
             if row.count < heads.count {
-                row.append(contentsOf: [String](repeating: "", count: heads.count - row.count))
+                row.append(contentsOf: [String](repeating: " ", count: heads.count - row.count))
             }
             return row
         }

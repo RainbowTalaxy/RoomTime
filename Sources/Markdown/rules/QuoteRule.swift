@@ -7,11 +7,6 @@
 
 import Foundation
 
-/*
- todo:
-    1. supports nested blockquote
- */
-
 fileprivate let quoteType = "quote"
 fileprivate let quoteRegex = #"(?:^ *>+ +.*$\n?)+"#
 fileprivate let quoteSignRegex = #"^ *> ?"#

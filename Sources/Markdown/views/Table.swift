@@ -40,7 +40,6 @@ public struct Table: View {
                 }
                 .fixedSize()
             }
-            .border(Color.black)
         }
     }
     
