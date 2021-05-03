@@ -67,7 +67,7 @@ struct AutoWrapDemo: View {
 
 ## Markdown
 
-`Markdown` is a separate module, so you just need to import `Markdown` .
+`Markdown` is a separate module, so you just need to import `Markdown`.
 
 Here is a brief usage:
 
@@ -166,16 +166,18 @@ Here gives a text which shows what `Markdown` supports:
     | title    | String | The title of the news. |
     | date     | Date   | The date of the news. |
     | author   | String | The author ... |
-    
-### Technology
 
-`Markdown` uses `Renderer` object to convert text into markdown elements.
+![Demo](Assets/markdown-demo.png)
 
-`Renderer` has two rendering stages: "Spliting" and "Mapping".
+### Mechanism
 
-In "Spliting" stage, `Renderer` splits text into `Raw`s by `SplitRule` instances orderly:
+`Markdown` uses `Renderer` to convert text into markdown elements.
 
-Text ==convert==> Raw ==SplitRule_1==> [Raw] ==SpliteRule_2==> [Raw] ==> ... ==> final [Raw]
+`Renderer` has two rendering stages: "Spliting" and "Mapping" :
+
+![Markdown mechanism](Assets/markdown.png)
+
+In "Spliting" stage, `Renderer` splits text into `Raw`s by `SplitRule` instances orderly.
 
 Here is the definetion of the `Raw`:
 ```swift
@@ -186,7 +188,7 @@ public struct Raw: Hashable {
 }
 ```
 
-* `lock` tells the `Renderer` whether wants to be splited by further spliting.
+* `lock` tells the `Renderer` whether wants to be splited by further split rules.
 * `text` contains the text itself.
 * `type` is for "Mapping" stage.
 
@@ -194,7 +196,7 @@ In "Mapping" stage, `Renderer` converts `Raw`s into `Element` objects.
 
 ### Extend syntax supports
 
-With such rendering machenism, you can customize your rendering rule.
+With `Markdown` rendering mechanism, you can customize your rendering rule.
 
 For Example, if you want to highlight lines which starts with `$` sign, you can implement by steps below:
 
@@ -217,9 +219,9 @@ fileprivate let dollerSignRegex = #"^\$ +(?=.*$)"#
 
 class DollarSplitRule: SplitRule {
     override func split(from text: String) -> [Raw] {
-        // You can use the inherited methos `split(by:text:type:)`
+        // You can use the inherited method `split(by:text:type:)`
         // to easily split text by Regex.
-        return super.split(by: dollerLineRegex, text: text, type: dollerLineType)
+        return split(by: dollerLineRegex, text: text, type: dollerLineType)
     }
 }
 
@@ -294,5 +296,7 @@ struct MarkdownDemo: View {
     }
 }
 ```
+
+Here is the output:
 
 ![Dollar line](Assets/dollar.png)
