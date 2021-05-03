@@ -26,12 +26,12 @@ public class HeaderMapRule: MapRule {
             var title: String
             var level: Int
             
-            if let num = raw.text.matchResult(by: headerSignRegex, options: lineRegexOption).first?.trimmed().count {
+            if let num = raw.text.matchResult(by: headerSignRegex).first?.trimmed().count {
                 level = (num >= minLevel && num <= maxLevel) ? num : 1
             } else {
                 level = maxLevel
             }
-            title = raw.text.replace(by: headerSignRegex, with: "", options: lineRegexOption).trimmed()
+            title = raw.text.replace(by: headerSignRegex, with: "").trimmed()
             return HeaderElement(title: title, level: level)
         } else {
             return nil

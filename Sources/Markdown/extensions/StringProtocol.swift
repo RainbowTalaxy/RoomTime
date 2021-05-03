@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension StringProtocol {
+public extension StringProtocol {
     var withLine: String {
         return self + "\n"
     }
@@ -33,13 +33,15 @@ extension StringProtocol {
     }
 }
 
-struct RegexSplitResult {
-    typealias Result = (range: Range<String.Index>, match: Bool)
-    let raw: String
-    let result: [Result]
+public let lineRegexOption: NSRegularExpression.Options = [.anchorsMatchLines]
+
+public struct RegexSplitResult {
+    public typealias Result = (range: Range<String.Index>, match: Bool)
+    public let raw: String
+    public let result: [Result]
 }
 
-extension StringProtocol {
+public extension StringProtocol {
     // count number of previous space
     var preBlankNum: Int {
         var result = 0
@@ -54,7 +56,10 @@ extension StringProtocol {
     }
     
     // check if match target regular expression
-    func match(by regexText: String, options: NSRegularExpression.Options) -> Bool {
+    func match(
+        by regexText: String,
+        options: NSRegularExpression.Options = lineRegexOption
+    ) -> Bool {
         let text = String(self)
         if let regex = try? NSRegularExpression(pattern: regexText, options: options) {
             let matches = regex.matches(
@@ -71,7 +76,11 @@ extension StringProtocol {
     }
     
     // replace internal text which matches target regular expression
-    func replace(by regexText: String, with template: String, options: NSRegularExpression.Options) -> String {
+    func replace(
+        by regexText: String,
+        with template: String,
+        options: NSRegularExpression.Options = lineRegexOption
+    ) -> String {
         let text = String(self)
         if let regex = try? NSRegularExpression(pattern: regexText, options: options) {
             let result = regex.stringByReplacingMatches(
@@ -86,7 +95,10 @@ extension StringProtocol {
         }
     }
     
-    func contains(by regexText: String, options: NSRegularExpression.Options) -> Bool {
+    func contains(
+        by regexText: String,
+        options: NSRegularExpression.Options = lineRegexOption
+    ) -> Bool {
         let text = String(self)
         if let regex = try? NSRegularExpression(pattern: regexText, options: options) {
             let matches = regex.matches(
@@ -102,7 +114,10 @@ extension StringProtocol {
         return false
     }
     
-    func matchNum(by regexText: String, options: NSRegularExpression.Options) -> Int {
+    func matchNum(
+        by regexText: String,
+        options: NSRegularExpression.Options = lineRegexOption
+    ) -> Int {
         let text = String(self)
         if let regex = try? NSRegularExpression(pattern: regexText, options: options) {
             let matches = regex.matches(
@@ -118,7 +133,10 @@ extension StringProtocol {
 }
 
 extension StringProtocol {
-    func matchResult(by rawRegex: String, options: NSRegularExpression.Options) -> [String] {
+    func matchResult(
+        by rawRegex: String,
+        options: NSRegularExpression.Options = lineRegexOption
+    ) -> [String] {
         let text = String(self)
         if let regex = try? NSRegularExpression(pattern: rawRegex, options: options) {
             let matches = regex.matches(
@@ -140,7 +158,10 @@ extension StringProtocol {
         }
     }
     
-    func split(by rawRegex: String, options: NSRegularExpression.Options) -> RegexSplitResult {
+    func split(
+        by rawRegex: String,
+        options: NSRegularExpression.Options = lineRegexOption
+    ) -> RegexSplitResult {
         let text = String(self)
         var result: [RegexSplitResult.Result] = []
         if let regex = try? NSRegularExpression(pattern: rawRegex, options: options) {

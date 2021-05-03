@@ -43,14 +43,14 @@ public class CodeMapRule: MapRule {
             var indent = 0
             
             if let firstLine = texts.first {
-                if firstLine.match(by: codeBlockHeadRegex, options: lineRegexOption) {
-                    lang = firstLine.replace(by: codeBlockSignRegex, with: "", options: lineRegexOption).trimmed()
+                if firstLine.match(by: codeBlockHeadRegex) {
+                    lang = firstLine.replace(by: codeBlockSignRegex, with: "").trimmed()
                     texts.removeFirst()
                 }
             }
             
             if let lastLine = texts.last {
-                if lastLine.match(by: codeBlockSignRegex, options: lineRegexOption) {
+                if lastLine.match(by: codeBlockSignRegex) {
                     indent = lastLine.preBlankNum
                     texts.removeLast()
                 }

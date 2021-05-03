@@ -7,6 +7,28 @@
 
 import SwiftUI
 
+public let defaultSplitRules: [SplitRule] = [
+    SpaceConvertRule(priority: 0),
+    BorderSplitRule(priority: 0.5),
+    ListSplitRule(priority: 1),
+    TableSplitRule(priority: 1.5),
+    CodeBlockSplitRule(priority: 3),
+    CodeIndentSplitRule(priority: 3.1),
+    HeaderSplitRule(priority: 4),
+    QuoteSplitRule(priority: 5),
+    LineSplitRule(priority: 6)
+]
+
+public let defaultMapRules: [MapRule] = [
+    HeaderMapRule(priority: 0),
+    QuoteMapRule(priority: 1),
+    CodeMapRule(priority: 2),
+    ListMapRule(priority: 3),
+    TableMapRule(priority: 3.5),
+    BorderMapRule(priority: 4),
+    LineMapRule(priority: 5)
+]
+
 public struct Markdown<Content: View>: View {
     
     public let elements: [Element]
@@ -54,4 +76,47 @@ public struct Markdown<Content: View>: View {
         }
     }
     
+}
+
+public struct ElementView: View {
+    public let element: Element
+    
+    public init(element: Element) {
+        self.element = element
+    }
+    
+    public var body: some View {
+        switch element {
+        case let header as HeaderElement:
+            Header(element: header)
+        case let quote as QuoteElement:
+            Quote(element: quote) { item in
+                Markdown(elements: item) { element in
+                    ElementView(element: element)
+                }
+            }
+        case let code as CodeElement:
+            Code(element: code)
+        case let orderList as OrderListElement:
+            OrderList(element: orderList) { item in
+                Markdown(elements: item) { element in
+                    ElementView(element: element)
+                }
+            }
+        case let unorderList as UnorderListElement:
+            UnorderList(element: unorderList) { item in
+                Markdown(elements: item) { element in
+                    ElementView(element: element)
+                }
+            }
+        case let table as TableElement:
+            Table(element: table)
+        case _ as BorderElement:
+            Border()
+        case let line as LineElement:
+            Line(element: line)
+        default:
+            EmptyView()
+        }
+    }
 }

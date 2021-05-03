@@ -21,6 +21,8 @@ public struct Raw: Hashable {
 
 open class Element: Identifiable {
     public let id = UUID()
+    
+    public init() {}
 }
 
 open class SplitRule {
@@ -48,7 +50,7 @@ open class SplitRule {
     
     public final func split(by regex: String, text: String, type: String) -> [Raw] {
         var elements: [Raw] = []
-        let splitResult = text.split(by: regex, options: lineRegexOption)
+        let splitResult = text.split(by: regex)
         for section in splitResult.result {
             let content = String(splitResult.raw[section.range])
             if section.match {

@@ -32,9 +32,9 @@ fileprivate let orderListNumberRegex = #"^ *[0-9]+(?=\. +[^ \n]+.*$)"#
 //}
 
 fileprivate func getLineType(line: Substring) -> String? {
-    if line.match(by: unorderListLineRegex, options: lineRegexOption) {
+    if line.match(by: unorderListLineRegex) {
         return unorderListType
-    } else if line.match(by: orderListLineRegex, options: lineRegexOption) {
+    } else if line.match(by: orderListLineRegex) {
         return orderListType
     } else {
         return nil
@@ -42,7 +42,7 @@ fileprivate func getLineType(line: Substring) -> String? {
 }
 
 fileprivate func getUnorderListSign(text: Substring) -> UnorderListElement.Sign? {
-    let splitResult = text.split(by: unorderListSignRegex, options: lineRegexOption)
+    let splitResult = text.split(by: unorderListSignRegex)
     for section in splitResult.result {
         if section.match {
             switch text[section.range].trimmed() {
@@ -61,7 +61,7 @@ fileprivate func getUnorderListSign(text: Substring) -> UnorderListElement.Sign?
 }
 
 fileprivate func getOrderListNumberSign(text: Substring) -> Int? {
-    let splitResult = text.split(by: orderListNumberRegex, options: lineRegexOption)
+    let splitResult = text.split(by: orderListNumberRegex)
     for section in splitResult.result {
         if section.match {
             return Int(text[section.range].trimmed())
@@ -74,9 +74,9 @@ fileprivate func getListIndentNum(text: Substring, type: String?) -> Int {
     var content = ""
     switch type {
     case unorderListType:
-        content = text.replace(by: unorderIndentRegex, with: "", options: lineRegexOption)
+        content = text.replace(by: unorderIndentRegex, with: "")
     case orderListType:
-        content = text.replace(by: orderIndentRegex, with: "", options: lineRegexOption)
+        content = text.replace(by: orderIndentRegex, with: "")
     default:
         return String(text).preBlankNum
     }
@@ -90,9 +90,9 @@ fileprivate func build(_ item: String, num: Int) -> String {
 fileprivate func getListSignRemoved(text: Substring, type: String?) -> String {
     switch type {
     case unorderListType:
-        return text.replace(by: unorderIndentRegex, with: "", options: lineRegexOption)
+        return text.replace(by: unorderIndentRegex, with: "")
     case orderListType:
-        return text.replace(by: orderIndentRegex, with: "", options: lineRegexOption)
+        return text.replace(by: orderIndentRegex, with: "")
     default:
         return String(text)
     }
@@ -130,7 +130,7 @@ public class ListSplitRule: SplitRule {
                     indent = getListIndentNum(text: line, type: type)
                 }
             default:
-                if line.match(by: listLineRegex, options: lineRegexOption) {
+                if line.match(by: listLineRegex) {
                     if content != "" {
                         content.removeLast()
                         raws.append(Raw(lock: false, text: content, type: type))
@@ -173,7 +173,7 @@ public class ListMapRule: MapRule {
                     continue
                 }
 
-                if line.match(by: orderListLineRegex, options: lineRegexOption) {
+                if line.match(by: orderListLineRegex) {
                     if offset == nil {
                         offset = getOrderListNumberSign(text: line)
                     }
@@ -220,7 +220,7 @@ public class ListMapRule: MapRule {
                     continue
                 }
 
-                if line.match(by: unorderListLineRegex, options: lineRegexOption) {
+                if line.match(by: unorderListLineRegex) {
                     if sign == nil {
                         sign = getUnorderListSign(text: line)
                     }

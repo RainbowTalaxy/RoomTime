@@ -19,32 +19,32 @@ fileprivate let tableContentRegex = #"(?<=(?:(?<!\\)\|)|(?:^))[^|].*?(?=(?:(?<!\
 fileprivate let tableSplitLineRegex = #"(?<!\\)\|"#
 
 fileprivate func getColumnNumFromAlignRow(text: Substring) -> Int {
-    return text.matchNum(by: tableAlignSignRegex, options: lineRegexOption)
+    return text.matchNum(by: tableAlignSignRegex)
 }
 
 fileprivate func getColumnNumFromHeadRow(text: Substring) -> Int {
     var text = text.trimmed()
-    let splitNum = text.matchNum(by: tableSplitLineRegex, options: lineRegexOption)
+    let splitNum = text.matchNum(by: tableSplitLineRegex)
     
     if splitNum < 1 || (splitNum == 1 && text.count == 1) {
         return 0
     }
     
-    text = text.replace(by: tableSplitLineRegex, with: " | ", options: lineRegexOption).trimmed()
-    return text.matchNum(by: tableContentRegex, options: lineRegexOption)
+    text = text.replace(by: tableSplitLineRegex, with: " | ").trimmed()
+    return text.matchNum(by: tableContentRegex)
 }
 
 fileprivate func getContentFromRow(text: Substring) -> [String] {
     var result: [String] = []
     let splitResult = text.trimmed()
-        .replace(by: tableSplitLineRegex, with: " | ", options: lineRegexOption).trimmed()
-        .split(by: tableContentRegex, options: lineRegexOption)
+        .replace(by: tableSplitLineRegex, with: " | ").trimmed()
+        .split(by: tableContentRegex)
     splitResult.result.forEach { section in
         if section.match {
             result.append(
                 splitResult.raw[section.range]
                     .trimmed()
-                    .replace(by: "\\|", with: "|", options: lineRegexOption)
+                    .replace(by: "\\|", with: "|")
             )
         }
     }
@@ -53,7 +53,7 @@ fileprivate func getContentFromRow(text: Substring) -> [String] {
 
 fileprivate func getContentFromAlignRow(text: Substring) -> [TableElement.Alignment] {
     var result: [TableElement.Alignment] = []
-    let splitResult = text.split(by: tableAlignSignRegex, options: lineRegexOption)
+    let splitResult = text.split(by: tableAlignSignRegex)
     splitResult.result.forEach { section in
         if section.match {
             let sign = splitResult.raw[section.range].trimmed()
@@ -86,7 +86,7 @@ public class TableSplitRule: SplitRule {
                     content += line.withLine
                 }
             } else {
-                if line.match(by: tableAlignRowRegex, options: lineRegexOption) {
+                if line.match(by: tableAlignRowRegex) {
                     let alignNum = getColumnNumFromAlignRow(text: line)
                     if let headLine = preLine {
                         let headNum = getColumnNumFromHeadRow(text: headLine)
