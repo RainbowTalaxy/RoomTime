@@ -257,7 +257,7 @@ struct DollarLine: View {
 
 Third, confgure the `Renderer`:
 
-```
+```swift
 let splitRules: [SplitRule] = defaultSplitRules + [
     DollarSplitRule(priority: 4.5)
 ]
