@@ -348,7 +348,7 @@ public let defaultMapRules: [MapRule] = [
 
 根据上述的渲染机制，我们可以加入一些自定义的语法。虽然步骤可能有些多，但是这是值得的。这里我通过一个例子来介绍如何加入自定义语法：
 
-我们期望能对以 `$` 作为开头的文本行进行黄色粗体显示。比如 "$ warning" 就是个以 `$` 作为开头的文本行。
+我们期望能对以 `$` 作为开头的文本行进行黄色粗体显示。比如 "\$ warning" 就是个以 `$` 作为开头的文本行。
 
 首先，我们定义好分割规则，映射规则，以及元素：
 
@@ -370,7 +370,7 @@ fileprivate let dollerSignRegex = #"^\$ +(?=.*$)"#
 class DollarSplitRule: SplitRule {
     override func split(from text: String) -> [Raw] {
         // 我们可以使用继承的 `split(by:text:type:)` 方法来快速地根据正则来分割文本
-        // 但这里我想说的是，我们需要将符合语法的 Raw 
+        // 但这里我想说的是，我们需要确认好的 Raw 的类型来让 MapRule 识别 
         return split(by: dollerLineRegex, text: text, type: dollerLineType)
     }
 }
