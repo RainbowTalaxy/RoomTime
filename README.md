@@ -171,13 +171,13 @@ Here gives a text which shows what `Markdown` supports:
 
 ### Mechanism
 
-`Markdown` uses `Renderer` to convert text into markdown elements.
+`Markdown` uses `Resolver` to convert text into markdown elements.
 
-`Renderer` has two rendering stages: "Spliting" and "Mapping" :
+`Resolver` has two rendering stages: "Spliting" and "Mapping" :
 
 ![Markdown mechanism](Assets/markdown.png)
 
-In "Spliting" stage, `Renderer` splits text into `Raw`s by `SplitRule` instances orderly.
+In "Spliting" stage, `Resolver` splits text into `Raw`s by `SplitRule` instances orderly.
 
 Here is the definetion of the `Raw`:
 ```swift
@@ -188,11 +188,11 @@ public struct Raw: Hashable {
 }
 ```
 
-* `lock` tells the `Renderer` whether wants to be splited by further split rules.
+* `lock` tells the `Resolver` whether wants to be splited by further split rules.
 * `text` contains the text itself.
 * `type` is for "Mapping" stage.
 
-In "Mapping" stage, `Renderer` converts `Raw`s into `Element` objects.
+In "Mapping" stage, `Resolver` converts `Raw`s into `Element` objects.
 
 ### Extend syntax supports
 
@@ -255,7 +255,7 @@ struct DollarLine: View {
 }
 ```
 
-Third, confgure the `Renderer`:
+Third, configure the `Resolver`:
 
 ```swift
 let splitRules: [SplitRule] = defaultSplitRules + [
