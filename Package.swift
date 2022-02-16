@@ -27,9 +27,6 @@ let package = Package(
             dependencies: []),
         .target(
             name: "Markdown",
-            dependencies: []),
-        .testTarget(
-            name: "RoomTimeTests",
             dependencies: ["RoomTime"]),
     ]
 )

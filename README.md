@@ -180,6 +180,7 @@ Here gives a text which shows what `Markdown` supports:
 In "Spliting" stage, `Resolver` splits text into `Raw`s by `SplitRule` instances orderly.
 
 Here is the definetion of the `Raw`:
+
 ```swift
 public struct Raw: Hashable {
     public let lock: Bool
