@@ -161,11 +161,11 @@ Here gives a text which shows what `Markdown` supports:
 
     Alignment syntax is supported.
 
-    | Property | Type   | Description |
-    |:-------- |:------:| -----------:|
+    | Property | Type   | Description            |
+    |:-------- |:------:| ----------------------:|
     | title    | String | The title of the news. |
-    | date     | Date   | The date of the news. |
-    | author   | String | The author ... |
+    | date     | Date   | The date of the news.  |
+    | author   | String | The author ...         |
 
 ![Demo](Assets/markdown-demo.png)
 

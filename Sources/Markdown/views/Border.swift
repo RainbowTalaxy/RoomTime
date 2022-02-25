@@ -13,12 +13,9 @@ public struct Border: View {
     public var body: some View {
         VStack(spacing: 0) {
             Rectangle()
-                .fill(Color.gray)
+                .fill(Color.gray.opacity(0.5))
                 .frame(height: 1)
-            
-            Rectangle()
-                .fill(Color.gray.opacity(0.1))
-                .frame(height: 2.5)
+                .shadow(radius: 1)
         }
         .padding(.vertical, 14)
     }

@@ -27,8 +27,6 @@ public struct OrderList<Content: View>: View {
                 HStack(alignment: .top, spacing: 5) {
                     ZStack(alignment: .center) {
                         Text("\(listIndex + element.offset).")
-                            .foregroundColor(.blue)
-                            .bold()
 
                         ForEach(0..<element.items.count) { i in
                             Text("\(i + element.offset).")
@@ -36,7 +34,6 @@ public struct OrderList<Content: View>: View {
                         }
                         .foregroundColor(.clear)
                     }
-//                    .padding(.leading, 4.5)
 
                     content(element.items[listIndex])
                 }
@@ -49,6 +46,8 @@ public struct OrderList<Content: View>: View {
 // MARK: Unorder list
 
 public struct UnorderList<Content: View>: View {
+    @Environment(\.colorScheme) var colorScheme
+    
     let element: UnorderListElement
     let content: ([Element]) -> Content
 
@@ -68,13 +67,13 @@ public struct UnorderList<Content: View>: View {
                         switch element.sign {
                         case .star:
                             Circle()
-                                .fill(Color.blue)
+                                .fill()
                         case .plus:
                             Rectangle()
-                                .fill(Color.blue)
+                                .fill()
                         case .minus:
                             Circle()
-                                .stroke(Color.blue)
+                                .stroke()
                         }
                     }
                     .frame(width: 7, height: 7)

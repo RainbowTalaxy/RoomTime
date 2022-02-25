@@ -20,10 +20,6 @@ public struct Header: View {
                 .font(.system(size: CGFloat(31 - 2 * element.level)))
                 .bold()
                 .padding(.vertical, 3)
-            
-            Rectangle()
-                .fill(Color.gray)
-                .frame(height: CGFloat(1.8 - Double(element.level) * 0.2))
         }
     }
 }

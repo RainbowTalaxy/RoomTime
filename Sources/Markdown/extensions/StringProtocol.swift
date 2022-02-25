@@ -160,6 +160,7 @@ extension StringProtocol {
     
     func split(
         by rawRegex: String,
+        maxSplits: Int = Int.max,
         options: NSRegularExpression.Options = lineRegexOption
     ) -> RegexSplitResult {
         let text = String(self)
@@ -171,7 +172,7 @@ extension StringProtocol {
                 range: NSRange(text.startIndex..., in: text)
             )
             var lowerBoundOffset = 0
-            for match in matches {
+            for match in matches[..<Swift.min(matches.count, maxSplits)] {
                 if let range = Range(match.range) {
                     if range.lowerBound > lowerBoundOffset {
                         let lowerBound = text.index(text.startIndex, offsetBy: lowerBoundOffset)

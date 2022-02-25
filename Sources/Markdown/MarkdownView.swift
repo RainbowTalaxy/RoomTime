@@ -9,6 +9,7 @@ import SwiftUI
 
 public let defaultSplitRules: [SplitRule] = [
     SpaceConvertRule(priority: 0),
+    FrontMatterSplitRule(priority: 0.25),
     BorderSplitRule(priority: 0.5),
     ListSplitRule(priority: 1),
     TableSplitRule(priority: 1.5),
@@ -20,6 +21,7 @@ public let defaultSplitRules: [SplitRule] = [
 ]
 
 public let defaultMapRules: [MapRule] = [
+    FrontMatterMapRule(priority: -1),
     HeaderMapRule(priority: 0),
     QuoteMapRule(priority: 1),
     CodeMapRule(priority: 2),
@@ -29,7 +31,7 @@ public let defaultMapRules: [MapRule] = [
     LineMapRule(priority: 5)
 ]
 
-public struct Markdown<Content: View>: View {
+public struct MarkdownView<Content: View>: View {
     
     public let elements: [Element]
     public let content: (Element) -> Content
@@ -91,7 +93,7 @@ public struct ElementView: View {
             Header(element: header)
         case let quote as QuoteElement:
             Quote(element: quote) { item in
-                Markdown(elements: item) { element in
+                MarkdownView(elements: item) { element in
                     ElementView(element: element)
                 }
             }
@@ -99,13 +101,13 @@ public struct ElementView: View {
             Code(element: code)
         case let orderList as OrderListElement:
             OrderList(element: orderList) { item in
-                Markdown(elements: item) { element in
+                MarkdownView(elements: item) { element in
                     ElementView(element: element)
                 }
             }
         case let unorderList as UnorderListElement:
             UnorderList(element: unorderList) { item in
-                Markdown(elements: item) { element in
+                MarkdownView(elements: item) { element in
                     ElementView(element: element)
                 }
             }

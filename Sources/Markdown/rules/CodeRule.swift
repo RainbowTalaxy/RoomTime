@@ -12,7 +12,7 @@ import Foundation
     1. supports indent codeblock
  */
 
-fileprivate let codeBlockType = "codeBlock"
+fileprivate let codeBlockType = "code"
 fileprivate let codeBlockRegex = #"^ *`{3} *\w* *$[\s\S]*?^ *`{3} *$"#
 fileprivate let codeBlockHeadRegex = #"^ *`{3} *\w* *$"#
 fileprivate let codeBlockSignRegex = #"^ *`{3} *"#

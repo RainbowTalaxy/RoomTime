@@ -48,9 +48,9 @@ open class SplitRule {
         return result
     }
     
-    public final func split(by regex: String, text: String, type: String) -> [Raw] {
+    public final func split(by regex: String, text: String, type: String, maxSplits: Int = Int.max) -> [Raw] {
         var elements: [Raw] = []
-        let splitResult = text.split(by: regex)
+        let splitResult = text.split(by: regex, maxSplits: maxSplits)
         for section in splitResult.result {
             let content = String(splitResult.raw[section.range])
             if section.match {

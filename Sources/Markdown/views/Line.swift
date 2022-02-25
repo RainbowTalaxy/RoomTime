@@ -15,6 +15,6 @@ public struct Line: View {
     }
     
     public var body: some View {
-        Text(element.text)
+        Text(try! AttributedString(markdown: element.text))
     }
 }
