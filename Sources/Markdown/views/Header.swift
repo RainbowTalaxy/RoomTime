@@ -16,7 +16,7 @@ public struct Header: View {
     
     public var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            Text(element.title)
+            Text(try! AttributedString(markdown: element.title))
                 .font(.system(size: CGFloat(31 - 2 * element.level)))
                 .bold()
                 .padding(.vertical, 3)

@@ -20,7 +20,7 @@ public struct Table: View {
                 ForEach(0..<element.heads.count) { col in
                     // single column
                     VStack(alignment: mapAlign(align: element.aligns[col]), spacing: 0) {
-                        Text(element.heads[col])
+                        Text(AttributedString(element.heads[col]))
                             .bold()
                             .padding(8)
                         
