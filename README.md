@@ -11,10 +11,7 @@ RoomTime is a bundle of tools developed in my app `RoomTime Lite`. (😊 RoomTim
 
 # Requirements
 
-- iOS 13 or newer
-- tvOS 13 or newer
-- watchOS 6 or newer
-- *macOS is not supported currently*
+- iOS 15 or newer
 
 # Installation
 
@@ -96,6 +93,7 @@ struct MarkdownDemo: View {
 * indent or block code
 * border
 * table
+* front matter
 * *more in development ...*
 
 Here gives a text which shows what `Markdown` supports:

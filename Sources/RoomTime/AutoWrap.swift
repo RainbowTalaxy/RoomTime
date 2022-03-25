@@ -143,6 +143,7 @@ where Data: RandomAccessCollection, ID: Hashable, Content: View {
                 values.forEach { val in
                     self.frameHeight = val.frameHeight
                 }
+                self.freshRanges()
             }
         }
         .frame(height: frameHeight)
