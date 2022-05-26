@@ -76,7 +76,7 @@ struct MarkdownDemo: View {
     
     var body: some View {
         ScrollView {
-            Markdown(text: text) { element in
+            MarkdownView(text: text) { element in
                 ElementView(element: element)
             }
             .padding()
